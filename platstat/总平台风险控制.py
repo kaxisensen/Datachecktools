@@ -39,12 +39,7 @@ def gameProfitEarlywarning(sdate, edate):
     if bool(co):
         return co
     else:
-        return [None, None, None, None]
-
-
-for i in gameProfitEarlywarning(starttime, endtime):
-    print([miscellaneous.gameHallName(i['_id']['游戏厅']) + i['_id']['游戏名称'] + i['_id']['桌号'], i['盈利'], i['下注总额'],
-           i['注单数']])
+        return [{'_id': {'游戏厅': 0, '游戏名称': None, '桌号': None}, '盈利': 0, '下注总额': 0, '注单数': 0}]
 
 
 @xw.func(async_mode='threading')
