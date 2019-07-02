@@ -29,7 +29,8 @@ def gameProfitEarlywarning(sdate, edate):
                              "$lte": edate}
             }
         },
-        {"$group": {"_id": {"游戏名称": "$game_name", "桌号": "$server_name"}, "盈利": {"$sum": "$operator_win_score"},
+        {"$group": {"_id": {"游戏厅": "$game_hall_id", "游戏名称": "$game_name", "桌号": "$server_name"},
+                    "盈利": {"$sum": "$operator_win_score"},
                     "下注总额": {"$sum": "$total_bet_score"},
                     "注单数": {"$sum": 1}}},
         {"$sort": {"盈利": -1}}
@@ -38,7 +39,12 @@ def gameProfitEarlywarning(sdate, edate):
     if bool(co):
         return co
     else:
-        return ["None", "None", "None", "None"]
+        return [None, None, None, None]
+
+
+for i in gameProfitEarlywarning(starttime, endtime):
+    print([miscellaneous.gameHallName(i['_id']['游戏厅']) + i['_id']['游戏名称'] + i['_id']['桌号'], i['盈利'], i['下注总额'],
+           i['注单数']])
 
 
 @xw.func(async_mode='threading')
@@ -47,6 +53,7 @@ def tableOrder():
     wb.sheets["总平台风险控制"].range("B1").value = datetime.utcnow() - timedelta(hours=4)
     cell = 5
     for i in gameProfitEarlywarning(starttime, endtime):
-        wb.sheets["总平台风险控制"].range('A' + str(cell)).value = [i['_id']['游戏名称'] + i['_id']['桌号'], i['盈利'], i['下注总额'],
-                                                             i['注单数']]
+        wb.sheets["总平台风险控制"].range('A' + str(cell)).value = [
+            miscellaneous.gameHallName(i['_id']['游戏厅']) + i['_id']['游戏名称'] + i['_id']['桌号'], i['盈利'], i['下注总额'],
+            i['注单数']]
         cell += 1
