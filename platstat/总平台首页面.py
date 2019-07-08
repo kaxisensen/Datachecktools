@@ -55,6 +55,8 @@ def operator_win_score(sdate, edate):
         return 0
 
 
+
+
 def loginTerminalstatistics(sdate, endate):
     '''
     总平台首页面渠道统计
@@ -115,6 +117,8 @@ def hallProfitTop10(sdate, edate):
         return {"hall_none": 0}
 
 
+print([ -i if i>0 else abs(i) for i in hallProfitTop10(starttime, endtime).values() ])
+
 def hallActiveMemberTop10(sdate, edate):
     '''
     总平台首页面厅主活跃会员数排名
@@ -158,7 +162,7 @@ def platFirstPage():
     wb.sheets["首页面"].range("A18").options(transpose=True).value = list(
         range(1, len(hallProfitTop10(starttime, endtime)) + 1))
     wb.sheets["首页面"].range("B18").options(transpose=True).value = list(hallProfitTop10(starttime, endtime).keys())
-    wb.sheets["首页面"].range("C18").options(transpose=True).value = list(hallProfitTop10(starttime, endtime).keys())
+    wb.sheets["首页面"].range("C18").options(transpose=True).value = [ -i if i>0 else abs(i) for i in hallProfitTop10(starttime, endtime).values() ]
     wb.sheets["首页面"].range("A31").options(transpose=True).value = list(
         range(1, len(hallActiveMemberTop10(starttime, endtime)) + 1))
     wb.sheets["首页面"].range("B31").options(transpose=True).value = list(hallActiveMemberTop10(starttime, endtime).keys())
