@@ -93,18 +93,18 @@ def monthOfactiveMemberStat():
     return count
 
 
-def betTimeIntervalDistribution(sdate, edate):
+def betTimeIntervalDistribution(sdate=starttime, edate=endtime):
     '''
     总平台用户数据统计之在线统计时段投注额分布
-    :param sdate: 开始日期
-    :param edate: 结束在
+    :param sdate: 开始日期，默认为美东时间零点
+    :param edate: 结束日期，默认为美东时间23:59:59
     :return: 返回在线统计时段投注额分布
     '''
     result = []
     moneyregion = [(1, 1000), (1000, 5000), (5000, 10000), (10000, 50000), (50000, 200000), (200000, 10000000)]
     for i in range(24):
         stime = sdate + timedelta(hours=i)
-        etime = edate + timedelta(hours=i + 1)
+        etime = sdate + timedelta(hours=i + 1)
         for j in moneyregion:
             moneyDistribution = db.get_collection("user_order").aggregate(
                 [
@@ -116,16 +116,16 @@ def betTimeIntervalDistribution(sdate, edate):
                     {"$group": {"_id": "null", "合计": {"$sum": "$bet_money"}}},
                     {"$project": {"_id": 0, "合计": 1}}
                 ])
-            # result.append([{"时间":str(i)+'-'+str(i+1)},{"区间":j},list(moneyDistribution)])
+            #result.append([{"时间":str(i)+'-'+str(i+1)},{"区间":j},list(moneyDistribution)])
             result.append(list(moneyDistribution))
     return result
 
 
-def betsIntervalDistribution(sdate, edate):
+def betsIntervalDistribution(sdate=starttime, edate=endtime):
     '''
     投注额区间注单数
-    :param sdate: 开始日期
-    :param edate: 结束日期
+    :param sdate: 开始日期,默认为美东时间当前日期的0点
+    :param edate: 结束日期，默认为美东时间当前日期的23:59:59
     :return: 返回投注额区间注单数
     '''
     result = []
@@ -145,8 +145,8 @@ def betsIntervalDistribution(sdate, edate):
             ])
         result.append(list(betsDistribution))
     # 昨日注单数统计
-    ysday = starttime - timedelta(days=1)
-    yeday = endtime - timedelta(days=1)
+    ysday = sdate - timedelta(days=1)
+    yeday = edate - timedelta(days=1)
     yresult = []
     for j in moneyregion:
         yesterdaybetsDistribution = db.get_collection("user_order").aggregate(
