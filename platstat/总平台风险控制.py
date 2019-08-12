@@ -143,7 +143,7 @@ def profitList():
 
 
 @xw.func(async_mode='threading')
-def winningList():
+def winerList():
     wb = xw.Book.caller()
     wb.sheets["总平台风险控制"].range("D53").options(transpose=True).value = list(playerWinningList(custStarttime, custEndtime).keys())
     wb.sheets["总平台风险控制"].range("E53").options(transpose=True).value = list(
