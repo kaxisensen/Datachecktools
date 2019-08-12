@@ -48,7 +48,7 @@ def playProfitList(sdate=starttime, edate=endtime):
     玩家盈利榜
     :param sdate:开始时间,默认为当天美东开始时间
     :param edate:结束时间,默认为当天美东结束时间
-    :return:根据时间段选择返回玩家盈利榜
+    :return:根据时间段选择返回玩家盈利榜返回前20名
     '''
     profitlist = db.get_collection("user_chart_info").aggregate([
         {
