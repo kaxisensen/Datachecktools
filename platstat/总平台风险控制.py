@@ -11,6 +11,7 @@ excludehalllist = miscellaneous.excludehalllist
 daysOfMonth = miscellaneous.daysOfMonth
 executeFile = miscellaneous.executeFile
 
+
 def gameProfitEarlywarning(sdate, edate):
     '''
     总平台风险控制游戏桌盈利排行，更新内容
@@ -61,8 +62,8 @@ def playProfitList(sdate=starttime, edate=endtime):
             }
         },
         {"$group": {"_id": "$user_name", "赢钱金额": {"$sum": "$total_win_score"}}},
-        {"$limit": 20},
-        {"$sort": {"赢钱金额": -1}}
+        {"$sort": {"赢钱金额": -1}},
+        {"$limit": 20}
     ])
     co = list(profitlist).copy()
     d = {}
@@ -71,7 +72,7 @@ def playProfitList(sdate=starttime, edate=endtime):
             d.update({i['_id']: i['赢钱金额']})
         return d
     else:
-        return {"None":0}
+        return {"None": 0}
 
 
 def playerWinningList(sdate=starttime, edate=endtime):
@@ -93,8 +94,8 @@ def playerWinningList(sdate=starttime, edate=endtime):
             }
         },
         {"$group": {"_id": "$user_name", "total_win_score": {"$push": {"title": "$total_win_score"}}}},
-        {"$limit": 20},
-        {"$sort": {"end_time": -1}}
+        {"$sort": {"end_time": -1}},
+        {"$limit": 20}
     ])
     co = list(winninglist).copy()
     if bool(co):
@@ -108,19 +109,24 @@ def playerWinningList(sdate=starttime, edate=endtime):
                 else:
                     maxvictory.append(victory)
                     victory = 0
-            wins.update({i['_id']: max(maxvictory)})
+            if maxvictory:
+                wins.update({i['_id']: max(maxvictory)})
         return dict(sorted(wins.items(), key=lambda x: x[1], reverse=True))
     else:
-        return {"None",0}
+        return {"None", 0}
 
 
-wbc=xw.Book(executeFile)
+wbc = xw.Book(executeFile)
 custStarttime = wbc.sheets["总平台风险控制"].range("I51").value
 custEndtime = wbc.sheets["总平台风险控制"].range("K51").value
-custStarttime=starttime if not custStarttime else datetime.strptime(custStarttime,'%Y-%m-%d %H:%M:%S')+timedelta(hours=4)
-custEndtime=endtime if not custEndtime else datetime.strptime(custEndtime,'%Y-%m-%d %H:%M:%S')+timedelta(hours=4)
-#custEndtime=datetime.strptime(custEndtime,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=4)
-print(custStarttime,custEndtime)
+custStarttime = starttime if not custStarttime else datetime.strptime(custStarttime, '%Y-%m-%d %H:%M:%S') + timedelta(
+    hours=4)
+custEndtime = endtime if not custEndtime else datetime.strptime(custEndtime, '%Y-%m-%d %H:%M:%S') + timedelta(hours=4)
+
+
+# custEndtime=datetime.strptime(custEndtime,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=4)
+# print(custStarttime,custEndtime)
+# print(playerWinningList(custStarttime,custEndtime))
 @xw.func(async_mode='threading')
 def tableOrder():
     wb = xw.Book.caller()
@@ -132,17 +138,24 @@ def tableOrder():
             i['注单数']]
         cell += 1
 
+
 @xw.func(async_mode='threading')
 def profitList():
     wb = xw.Book.caller()
     wb.sheets["总平台风险控制"].range("A53").options(transpose=True).value = [i + 1 for i in range(21)]
-    wb.sheets["总平台风险控制"].range("B53").options(transpose=True).value = list(playProfitList(custStarttime, custEndtime).keys())
-    wb.sheets["总平台风险控制"].range("C53").options(transpose=True).value = list(playProfitList(custStarttime, custEndtime).values())
+    wb.sheets["总平台风险控制"].range("B53").options(transpose=True).value = list(
+        playProfitList(custStarttime, custEndtime).keys())
+    wb.sheets["总平台风险控制"].range("C53").options(transpose=True).value = list(
+        playProfitList(custStarttime, custEndtime).values())
 
 
 @xw.func(async_mode='threading')
-def winningList():
+def liansheng():
     wb = xw.Book.caller()
-    wb.sheets["总平台风险控制"].range("D53").options(transpose=True).value = list(playerWinningList(custStarttime, custEndtime).keys())
+    wb.sheets["总平台风险控制"].range("D53").options(transpose=True).value = list(
+        playerWinningList(custStarttime, custEndtime).keys())
     wb.sheets["总平台风险控制"].range("E53").options(transpose=True).value = list(
-        playerWinningList(starttime, endtime).values())
+        playerWinningList(custStarttime, custEndtime).values())
+
+
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MongoConfiguration">
+    <option name="serverConfigurations">
+      <list>
+        <ServerConfiguration>
+          <option name="authenticationDatabase" value="live_game" />
+          <option name="authenticationMechanism" value="SCRAM-SHA-1" />
+          <option name="label" value="外网测试环境Mongo" />
+          <option name="password" value="Lv201888*" />
+          <option name="serverUrls">
+            <list>
+              <option value="10.200.124.27:30000" />
+            </list>
+          </option>
+          <option name="sshTunnelingConfiguration">
+            <SshTunnelingConfiguration />
+          </option>
+          <option name="userDatabase" value="live_game" />
+          <option name="username" value="Liveadmin" />
+        </ServerConfiguration>
+      </list>
+    </option>
+    <option name="shellPath" value="D:\Program Files\MongoDB\mongodb\bin\mongo.exe" />
+  </component>
+</project>
