@@ -13,7 +13,7 @@ executeFile = miscellaneous.executeFile
 
 def gameProfitEarlywarning(sdate, edate):
     '''
-    总平台风险控制游戏桌盈利排行
+    总平台风险控制游戏桌盈利排行，更新内容
     :param sdate:开始时间
     :param edate:结束时间
     :return:返回当天所有游戏的盈利情况，盈利值相对于玩家
