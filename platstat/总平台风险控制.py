@@ -122,7 +122,7 @@ custStarttime=starttime if not custStarttime else datetime.strptime(custStarttim
 custEndtime=endtime if not custEndtime else datetime.strptime(custEndtime,'%Y-%m-%d %H:%M:%S')+timedelta(hours=4)
 #custEndtime=datetime.strptime(custEndtime,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=4)
 #print(custStarttime,custEndtime)
-print(playerWinningList(custStarttime,custEndtime))
+#print(playerWinningList(custStarttime,custEndtime))
 @xw.func(async_mode='threading')
 def tableOrder():
     wb = xw.Book.caller()
@@ -147,4 +147,4 @@ def winningList():
     wb = xw.Book.caller()
     wb.sheets["总平台风险控制"].range("D53").options(transpose=True).value = list(playerWinningList(custStarttime, custEndtime).keys())
     wb.sheets["总平台风险控制"].range("E53").options(transpose=True).value = list(
-        playerWinningList(starttime, endtime).values())
+        playerWinningList(custStarttime, custEndtime).values())
