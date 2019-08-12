@@ -94,8 +94,8 @@ def playerWinningList(sdate=starttime, edate=endtime):
             }
         },
         {"$group": {"_id": "$user_name", "total_win_score": {"$push": {"title": "$total_win_score"}}}},
-        {"$limit": 20},
-        {"$sort": {"end_time": -1}}
+        {"$sort": {"end_time": -1}},
+        {"$limit": 20}
     ])
     co = list(winninglist).copy()
     if bool(co):
