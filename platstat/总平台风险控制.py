@@ -108,7 +108,8 @@ def playerWinningList(sdate=starttime, edate=endtime):
                 else:
                     maxvictory.append(victory)
                     victory = 0
-            wins.update({i['_id']: max(maxvictory)})
+            if maxvictory:
+                wins.update({i['_id']: max(maxvictory)})
         return dict(sorted(wins.items(), key=lambda x: x[1], reverse=True))
     else:
         return {"None",0}
@@ -120,7 +121,8 @@ custEndtime = wbc.sheets["总平台风险控制"].range("K51").value
 custStarttime=starttime if not custStarttime else datetime.strptime(custStarttime,'%Y-%m-%d %H:%M:%S')+timedelta(hours=4)
 custEndtime=endtime if not custEndtime else datetime.strptime(custEndtime,'%Y-%m-%d %H:%M:%S')+timedelta(hours=4)
 #custEndtime=datetime.strptime(custEndtime,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=4)
-print(custStarttime,custEndtime)
+#print(custStarttime,custEndtime)
+print(playerWinningList(custStarttime,custEndtime))
 @xw.func(async_mode='threading')
 def tableOrder():
     wb = xw.Book.caller()
