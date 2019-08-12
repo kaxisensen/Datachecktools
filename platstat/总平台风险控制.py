@@ -62,8 +62,8 @@ def playProfitList(sdate=starttime, edate=endtime):
             }
         },
         {"$group": {"_id": "$user_name", "赢钱金额": {"$sum": "$total_win_score"}}},
-        {"$limit": 20},
-        {"$sort": {"赢钱金额": -1}}
+        {"$sort": {"赢钱金额": -1}},
+        {"$limit": 20}
     ])
     co = list(profitlist).copy()
     d = {}
